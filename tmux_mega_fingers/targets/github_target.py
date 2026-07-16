@@ -26,7 +26,7 @@ def remote_origin_url(cwd: str) -> Optional[str]:
 
 def _normalize_git_url(url: str) -> Optional[str]:
     # git@github.com:owner/repo.git  -> https://github.com/owner/repo
-    m = re.match(r'(?:git@|https://)github\.com[:/](.+?)(?:\.git)?$', url)
+    m = re.match(r'(?:(?:ssh://)?git@|https://)github\.com[:/](.+?)(?:\.git)?$', url)
     if not m:
         return None
     return f'https://github.com/{m.group(1)}'

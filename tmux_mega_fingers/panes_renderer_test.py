@@ -346,3 +346,21 @@ def test_multiple_panes():
 
         ['getch', ascii.ESC]
     ]
+
+
+def test_shifted_hint_triggers_secondary_action_once():
+    ui = MockUI(user_input=[65])
+    mock_target = MockTarget()
+
+    pane = create_pane({'text': 'line 1\nline 2'})
+    pane.marks = [Mark(
+        start=1,
+        text='ine',
+        target=mock_target,
+        hint='a'
+    )]
+    panes_renderer = PanesRenderer(ui, [pane])
+
+    panes_renderer.loop()
+
+    assert mock_target.calls == [['default_secondary_action']]

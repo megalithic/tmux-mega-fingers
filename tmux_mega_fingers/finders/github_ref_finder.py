@@ -72,4 +72,4 @@ class GitHubRefFinder(BaseFinder):
             url = f'{repo}/issues/{num}'
             return Mark(start=start, text=text, target=GitHubTarget(url=url, label=text))
 
-        return None
+        return None  # pragma: no cover
