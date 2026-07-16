@@ -22,7 +22,7 @@ a follow-up if you want true section selection.
 """
 
 import re
-from typing import Optional, Pattern, List
+from typing import Optional, Pattern, List, Match
 
 from .finder import BaseFinder
 from ..mark import Mark
@@ -77,7 +77,7 @@ class PiSectionFinder(BaseFinder):
             return re.compile(r'(?!x)x')
         return re.compile('|'.join(p.pattern for p in PI_SECTION_PATTERNS))
 
-    def match_to_mark(self, match) -> Optional[Mark]:
+    def match_to_mark(self, match: Match[str]) -> Optional[Mark]:
         text = match.group(0)
         return Mark(
             start=match.span()[0],

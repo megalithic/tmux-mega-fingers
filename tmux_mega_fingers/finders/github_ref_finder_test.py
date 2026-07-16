@@ -1,5 +1,6 @@
 import os
 import subprocess
+from pathlib import Path
 
 from ..mark import Mark
 from ..targets.github_target import GitHubTarget
@@ -16,7 +17,10 @@ def test_slug_issue():
         Mark(
             start=4,
             text='owner/repo#99',
-            target=GitHubTarget(url='https://github.com/owner/repo/issues/99', label='owner/repo#99')
+            target=GitHubTarget(
+                url='https://github.com/owner/repo/issues/99',
+                label='owner/repo#99'
+            )
         )
     ]
 
@@ -79,20 +83,26 @@ def test_diff_a_b_not_matched():
     assert _marks('diff --git a/x b/x') == []
 
 
-def test_bare_issue_without_remote(tmp_path):
+def test_bare_issue_without_remote(tmp_path: Path):
     subprocess.run(['git', 'init', '-q'], cwd=tmp_path)
     assert _marks('fix #42', str(tmp_path)) == []
 
 
-def test_bare_issue_with_remote(tmp_path):
+def test_bare_issue_with_remote(tmp_path: Path):
     subprocess.run(['git', 'init', '-q'], cwd=tmp_path)
-    subprocess.run(['git', 'remote', 'add', 'origin', 'git@github.com:foo/bar.git'], cwd=tmp_path)
+    subprocess.run(
+        ['git', 'remote', 'add', 'origin', 'git@github.com:foo/bar.git'],
+        cwd=tmp_path
+    )
     marks = _marks('fix #42', str(tmp_path))
     assert marks == [
         Mark(
             start=4,
             text='#42',
-            target=GitHubTarget(url='https://github.com/foo/bar/issues/42', label='#42')
+            target=GitHubTarget(
+                url='https://github.com/foo/bar/issues/42',
+                label='#42'
+            )
         )
     ]
 
@@ -102,11 +112,12 @@ def test_hex_color_hash_not_matched():
     assert _marks('color #123abc') == []
 
 
-def test_slug_defers_to_existing_file(tmp_path):
-    os.makedirs(os.path.join(tmp_path, 'foo'))
+def test_slug_defers_to_existing_file(tmp_path: Path):
+    tmp_dir = str(tmp_path)
+    os.makedirs(os.path.join(tmp_dir, 'foo'))
     # foo/bar does not exist under tmp_path, so it still matches as a slug
-    assert _marks('foo/bar', str(tmp_path)) != []
+    assert _marks('foo/bar', tmp_dir) != []
     # foo (dir) exists but foo/bar does not -> still a slug (no defer)
     # create foo/bar as a file to confirm defer
-    open(os.path.join(tmp_path, 'foo', 'bar'), 'w').close()
-    assert _marks('foo/bar', str(tmp_path)) == []
+    open(os.path.join(tmp_dir, 'foo', 'bar'), 'w').close()
+    assert _marks('foo/bar', tmp_dir) == []

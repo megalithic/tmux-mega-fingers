@@ -9,7 +9,7 @@ from ..actions.copy_to_clipboard_action import CopyToClipboardAction
 from ..actions.os_open_action import OsOpenAction
 
 
-def _remote_origin_url(cwd: str) -> Optional[str]:
+def remote_origin_url(cwd: str) -> Optional[str]:
     """Return the HTTPS github URL for the current repo's origin, or None.
 
     Used to resolve bare `#123` / `PR #123` refs against the repo you're in.

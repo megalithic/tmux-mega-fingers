@@ -87,10 +87,10 @@ class RealCliAdapter(CliAdapter):  # pragma: no cover
             ][0]
 
     def select_tmux_window(self, id: str) -> None:
-        os.system(f'tmux select-window -t {id}')
+        subprocess.run(['tmux', 'select-window', '-t', id])
 
     def select_tmux_pane(self, id: str) -> None:
-        os.system(f'tmux select-pane -t {id}')
+        subprocess.run(['tmux', 'select-pane', '-t', id])
 
     def tmux_send_keys(self, id: str, keys: str) -> None:
         subprocess.run(['tmux', 'send-keys', '-t', id] + shlex.split(keys))

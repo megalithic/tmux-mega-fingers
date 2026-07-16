@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Tuple, Type
 from ..mark import Mark
 from ..utils import flatten
 from .rails_log_controller_finder import RailsLogControllerFinder
@@ -53,7 +53,7 @@ def _remove_overlapping_marks(marks: List[Mark]) -> List[Mark]:
     real file path, or a `pull/7` slug inside a github.com URL).
     """
     kept: List[Mark] = []
-    spans: List[tuple] = []
+    spans: List[Tuple[int, int]] = []
     for m in marks:
         s, e = m.start, m.end
         if any(not (e <= ks or s >= ke) for ks, ke in spans):

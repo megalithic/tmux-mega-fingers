@@ -4,7 +4,7 @@ from typing import Optional, Pattern, Match
 
 from .finder import BaseFinder
 from ..mark import Mark
-from ..targets.github_target import GitHubTarget, _remote_origin_url
+from ..targets.github_target import GitHubTarget, remote_origin_url
 
 
 # owner segment (github user/org): alphanumeric + hyphens, no dot/underscore.
@@ -66,7 +66,7 @@ class GitHubRefFinder(BaseFinder):
 
         if match.group('bare'):
             num = text[1:]
-            repo = _remote_origin_url(self.path_prefix)
+            repo = remote_origin_url(self.path_prefix)
             if not repo:
                 return None
             url = f'{repo}/issues/{num}'

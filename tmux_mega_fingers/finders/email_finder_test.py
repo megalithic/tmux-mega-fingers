@@ -10,7 +10,11 @@ def _marks(text: str):
 def test_finds_simple_email():
     marks = _marks('mail me at seth@example.com please')
     assert marks == [
-        Mark(start=11, text='seth@example.com', target=EmailTarget(email='seth@example.com'))
+        Mark(
+            start=11,
+            text='seth@example.com',
+            target=EmailTarget(email='seth@example.com')
+        )
     ]
 
 
@@ -27,7 +31,9 @@ def test_finds_subdomain_email():
 
 def test_secondary_payload_is_mailto():
     marks = _marks('a@b.co')
-    assert marks[0].target.payload.file_or_url == 'mailto:a@b.co'
+    target = marks[0].target
+    assert isinstance(target, EmailTarget)
+    assert target.payload.file_or_url == 'mailto:a@b.co'
 
 
 def test_ignores_bare_at():
