@@ -42,10 +42,10 @@ class MarkFinder:
                 self.finders
             ))
         )
-        return _remove_overlapping_marks(all_marks)
+        return remove_overlapping_marks(all_marks)
 
 
-def _remove_overlapping_marks(marks: List[Mark]) -> List[Mark]:
+def remove_overlapping_marks(marks: List[Mark]) -> List[Mark]:
     """Drop marks that overlap an earlier (finder-order) mark.
 
     Finders run in FINDERS order, so path/url/rails marks land first and win
