@@ -1,8 +1,6 @@
-import os
 import re
 import subprocess
 from dataclasses import dataclass
-from functools import cached_property
 from typing import Type, Optional
 from .target import Target
 from .target_payload import OsOpenable

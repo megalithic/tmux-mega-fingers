@@ -28,7 +28,6 @@ from .finder import BaseFinder
 from ..mark import Mark
 from ..targets.target import Target
 from ..targets.target_payload import OsOpenable
-from ..actions.action import Action
 from ..actions.copy_to_clipboard_action import CopyToClipboardAction
 
 

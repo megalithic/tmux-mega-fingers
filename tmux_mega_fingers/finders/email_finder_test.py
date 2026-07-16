@@ -9,12 +9,20 @@ def _marks(text: str):
 
 def test_finds_simple_email():
     marks = _marks('mail me at seth@example.com please')
-    assert marks == [Mark(start=11, text='seth@example.com', target=EmailTarget(email='seth@example.com'))]
+    assert marks == [
+        Mark(start=11, text='seth@example.com', target=EmailTarget(email='seth@example.com'))
+    ]
 
 
 def test_finds_subdomain_email():
     marks = _marks('dev@sub.example.co.uk here')
-    assert marks == [Mark(start=0, text='dev@sub.example.co.uk', target=EmailTarget(email='dev@sub.example.co.uk'))]
+    assert marks == [
+        Mark(
+            start=0,
+            text='dev@sub.example.co.uk',
+            target=EmailTarget(email='dev@sub.example.co.uk')
+        )
+    ]
 
 
 def test_secondary_payload_is_mailto():

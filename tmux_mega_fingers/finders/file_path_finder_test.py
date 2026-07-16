@@ -146,7 +146,7 @@ def test_sets_content_type(change_test_dir: str):
 def test_finds_directories(change_test_dir: str):
     os.mkdir('./stuff')
     pane = create_pane({
-        'unwrapped_text': 'Stuff in ./stuff rail',
+        'unwrapped_text': 'Items in ./stuff rail',
         'current_path': os.getcwd()
     })
     expected_marks = [

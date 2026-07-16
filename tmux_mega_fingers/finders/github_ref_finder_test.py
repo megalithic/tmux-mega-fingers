@@ -1,10 +1,8 @@
 import os
 import subprocess
 
-import pytest
-
 from ..mark import Mark
-from ..targets.github_target import GitHubTarget, _remote_origin_url
+from ..targets.github_target import GitHubTarget
 from .github_ref_finder import GitHubRefFinder
 
 
@@ -14,12 +12,24 @@ def _marks(text: str, path_prefix: str = '/tmp'):
 
 def test_slug_issue():
     marks = _marks('see owner/repo#99')
-    assert marks == [Mark(start=4, text='owner/repo#99', target=GitHubTarget(url='https://github.com/owner/repo/issues/99', label='owner/repo#99'))]
+    assert marks == [
+        Mark(
+            start=4,
+            text='owner/repo#99',
+            target=GitHubTarget(url='https://github.com/owner/repo/issues/99', label='owner/repo#99')
+        )
+    ]
 
 
 def test_bare_slug():
     marks = _marks('open foo/bar in browser')
-    assert marks == [Mark(start=5, text='foo/bar', target=GitHubTarget(url='https://github.com/foo/bar', label='foo/bar'))]
+    assert marks == [
+        Mark(
+            start=5,
+            text='foo/bar',
+            target=GitHubTarget(url='https://github.com/foo/bar', label='foo/bar')
+        )
+    ]
 
 
 def test_slug_with_dots_rejected_for_bare():
@@ -33,12 +43,30 @@ def test_slug_prefix_of_path_still_matches_if_no_dot():
     # the trailing `_controller.rb` is left unmatched. This is inherent
     # ambiguity, accepted for the bare-slug case.
     marks = _marks('see controllers/orders_controller.rb')
-    assert marks == [Mark(start=4, text='controllers/orders', target=GitHubTarget(url='https://github.com/controllers/orders', label='controllers/orders'))]
+    assert marks == [
+        Mark(
+            start=4,
+            text='controllers/orders',
+            target=GitHubTarget(
+                url='https://github.com/controllers/orders',
+                label='controllers/orders'
+            )
+        )
+    ]
 
 
 def test_slug_issue_allows_dots():
     marks = _marks('owner/repo.io#42')
-    assert marks == [Mark(start=0, text='owner/repo.io#42', target=GitHubTarget(url='https://github.com/owner/repo.io/issues/42', label='owner/repo.io#42'))]
+    assert marks == [
+        Mark(
+            start=0,
+            text='owner/repo.io#42',
+            target=GitHubTarget(
+                url='https://github.com/owner/repo.io/issues/42',
+                label='owner/repo.io#42'
+            )
+        )
+    ]
 
 
 def test_url_path_segment_not_matched():
@@ -60,7 +88,13 @@ def test_bare_issue_with_remote(tmp_path):
     subprocess.run(['git', 'init', '-q'], cwd=tmp_path)
     subprocess.run(['git', 'remote', 'add', 'origin', 'git@github.com:foo/bar.git'], cwd=tmp_path)
     marks = _marks('fix #42', str(tmp_path))
-    assert marks == [Mark(start=4, text='#42', target=GitHubTarget(url='https://github.com/foo/bar/issues/42', label='#42'))]
+    assert marks == [
+        Mark(
+            start=4,
+            text='#42',
+            target=GitHubTarget(url='https://github.com/foo/bar/issues/42', label='#42')
+        )
+    ]
 
 
 def test_hex_color_hash_not_matched():
